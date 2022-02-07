@@ -12,7 +12,7 @@ export default function Cell({ className, state, isRowActive, isActive, ...rest 
     <div
       className={classNames(
         className,
-        'w-16 h-16 flex items-center justify-center border-2 rounded text-2xl font-bold uppercase transition-all',
+        'w-14 sm:w-16 h-14 sm:h-16 flex items-center justify-center border-2 rounded text-2xl font-bold uppercase transition-all',
         isRowActive && 'border-gray-400',
         isActive && 'border-b-8',
         {

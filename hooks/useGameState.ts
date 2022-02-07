@@ -86,7 +86,7 @@ export default function useGameState() {
     if (!validEntry) {
       setGameState({
         ...gameState,
-        error: 'Palavra não encontrada',
+        error: 'Palavra não encontrada na lista',
       });
       return;
     }

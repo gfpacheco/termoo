@@ -9,7 +9,7 @@ import Toast from './Toast';
 export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function Game({ className, ...rest }: GameProps) {
-  const { status, word, charsState, table, onKeyPress, restart } = useGameState();
+  const { status, word, charsState, table, error, onKeyPress, restart } = useGameState();
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -25,12 +25,13 @@ export default function Game({ className, ...rest }: GameProps) {
 
   return (
     <div
-      className={classNames(className, 'h-screen flex flex-col items-center justify-center')}
+      className={classNames(className, 'h-full p-2 flex flex-col items-center justify-center')}
       {...rest}
     >
       {status === GameStatus.failed && <Toast>Palavra certa: {word}</Toast>}
+      {error && <Toast>{error}</Toast>}
       <Table {...table} />
-      <ResetButton className="my-4" onClick={restart} />
+      <ResetButton className="my-2" onClick={restart} />
       <Keyboard charsState={charsState} onKeyPress={onKeyPress} />
     </div>
   );

@@ -23,7 +23,7 @@ export default function Keyboard({ className, charsState, onKeyPress, ...rest }:
         {['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].map(char => (
           <Key
             key={char}
-            className="mr-1 flex-1"
+            className="mr-1"
             status={statusByChar[char]}
             onClick={() => onKeyPress(char)}
           >
@@ -37,14 +37,14 @@ export default function Keyboard({ className, charsState, onKeyPress, ...rest }:
         {['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'].map(char => (
           <Key
             key={char}
-            className="ml-1 flex-1"
+            className="ml-1"
             status={statusByChar[char]}
             onClick={() => onKeyPress(char)}
           >
             {char}
           </Key>
         ))}
-        <Key className="ml-4 flex-1" onClick={() => onKeyPress('Backspace')}>
+        <Key className="ml-4" onClick={() => onKeyPress('Backspace')}>
           ⌫
         </Key>
       </div>
@@ -53,14 +53,14 @@ export default function Keyboard({ className, charsState, onKeyPress, ...rest }:
         {['z', 'x', 'c', 'v', 'b', 'n', 'm'].map(char => (
           <Key
             key={char}
-            className="ml-1 flex-1"
+            className="ml-1"
             status={statusByChar[char]}
             onClick={() => onKeyPress(char)}
           >
             {char}
           </Key>
         ))}
-        <Key className="ml-4 w-[6.5rem]" onClick={() => onKeyPress('Enter')}>
+        <Key className="ml-4 flex-[2]" onClick={() => onKeyPress('Enter')}>
           enter
         </Key>
       </div>
