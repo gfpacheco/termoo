@@ -1,15 +1,18 @@
 import classNames from 'classnames';
+import { CellState } from '../hooks/useGameState';
 import Row from './Row';
 
 export interface TableProps extends React.ComponentPropsWithoutRef<'div'> {
-  entries: (string | undefined)[][];
+  rows: (CellState | undefined)[][];
+  activeRow: number;
+  activeCell: number;
 }
 
-export default function Table({ className, entries, ...rest }: TableProps) {
+export default function Table({ className, rows, activeRow, activeCell, ...rest }: TableProps) {
   return (
     <div className={classNames(className, 'grid grid-cols-1 gap-1')} {...rest}>
-      {entries.map((entry, index) => (
-        <Row key={index} entry={entry} />
+      {rows.map((row, index) => (
+        <Row key={index} row={row} isActive={activeRow === index} activeCell={activeCell} />
       ))}
     </div>
   );
