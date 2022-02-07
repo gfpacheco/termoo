@@ -12,4 +12,8 @@
   html {
     @apply text-gray-700;
   }
+
+  svg {
+    @apply inline-block fill-current;
+  }
 }
