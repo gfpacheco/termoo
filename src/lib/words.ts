@@ -1,10 +1,4 @@
-import removeDiacritics from './removeDiacritics';
-
-export function getValidWord(entry: string): string | undefined {
-  return words.find(word => removeDiacritics(word) === removeDiacritics(entry));
-}
-
-const words = [
+export const words = [
   'abade',
   'abafa',
   'abafe',

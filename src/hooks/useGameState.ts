@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
+import getValidWord from '../lib/getValidWord';
 import randomElement from '../lib/randomElement';
 import removeDiacritics from '../lib/removeDiacritics';
-import words, { getValidWord } from '../lib/words';
+import words from '../lib/words';
 
 export interface GameState {
   status: GameStatus;
