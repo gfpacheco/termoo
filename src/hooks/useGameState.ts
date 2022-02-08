@@ -6,7 +6,7 @@ import words, { getValidWord } from '../lib/words';
 export interface GameState {
   status: GameStatus;
   word: string;
-  charsState: CellState[];
+  charsStatus: Record<string, CellStatus>;
   table: TableState;
   error?: string;
 }
@@ -41,7 +41,7 @@ function getInitialState(): GameState {
   return {
     status: GameStatus.completed,
     word: randomElement(words),
-    charsState: [],
+    charsStatus: {},
     table: {
       rows: [...Array(numRows)].map(() => [...Array(numCells)]),
       activeRow: 0,
@@ -77,7 +77,7 @@ export default function useGameState() {
   const verifyActiveRow = useCallback(() => {
     const {
       word,
-      charsState,
+      charsStatus,
       table: { rows, activeRow },
     } = gameState;
     const entry = rows[activeRow].map(cell => cell?.char).join('');
@@ -92,42 +92,43 @@ export default function useGameState() {
     }
 
     const remainingChars: (string | undefined)[] = removeDiacritics(word).split('');
-    const newCharsState = [...charsState];
-    const newRow: (CellState | undefined)[] = rows[activeRow]
-      .filter(cell => cell)
-      .map((cell, index) => {
-        if (!cell) {
-          return cell;
-        }
+    const newRow: (CellState | undefined)[] = rows[activeRow].map((cell, index) => {
+      if (!cell) {
+        return cell;
+      }
 
-        const charIndex = remainingChars.indexOf(cell.char);
+      const charIndex =
+        remainingChars[index] === cell.char ? index : remainingChars.indexOf(cell.char);
 
-        if (charIndex >= 0) {
-          remainingChars[charIndex] = undefined;
-        }
+      if (charIndex >= 0) {
+        remainingChars[charIndex] = undefined;
+      }
 
-        const status =
-          charIndex === -1
-            ? CellStatus.notPresent
-            : index === charIndex
-            ? CellStatus.correct
-            : CellStatus.wrongPlace;
+      const status =
+        charIndex === -1
+          ? CellStatus.notPresent
+          : index === charIndex
+          ? CellStatus.correct
+          : CellStatus.wrongPlace;
 
-        const charStateIndex = newCharsState.findIndex(charState => charState.char === cell.char);
-        if (charStateIndex >= 0) {
-          newCharsState[charStateIndex] = {
-            char: cell.char,
-            status: Math.max(status, newCharsState[charStateIndex].status ?? CellStatus.notPresent),
-          };
-        } else {
-          newCharsState.push({ char: cell.char, status });
-        }
+      return {
+        char: validEntry[index],
+        status,
+      };
+    });
 
-        return {
-          char: validEntry[index],
-          status,
-        };
-      });
+    const newCharsStatus = { ...charsStatus };
+    newRow.forEach(cellState => {
+      if (!cellState || !cellState.status) {
+        return;
+      }
+
+      newCharsStatus[cellState.char] = Math.max(
+        newCharsStatus[cellState.char] ?? CellStatus.notPresent,
+        cellState.status,
+      );
+    });
+
     const complete = newRow.every(cell => cell?.status === CellStatus.correct);
     const newRows = [...gameState.table.rows];
     newRows[activeRow] = newRow;
@@ -139,7 +140,7 @@ export default function useGameState() {
         : activeRow === numRows - 1
         ? GameStatus.failed
         : GameStatus.playing,
-      charsState: newCharsState,
+      charsStatus: newCharsStatus,
       table: {
         rows: newRows,
         activeRow: complete ? numRows : activeRow + 1,
