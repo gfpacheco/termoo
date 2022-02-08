@@ -2,11 +2,13 @@
   "name": "termo-infinito",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gfpacheco.github.io/termo-infinito",
   "dependencies": {
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "autoprefixer": "^10.4.2",
     "classnames": "^2.3.1",
+    "gh-pages": "^3.2.3",
     "postcss": "^8.4.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -15,6 +17,8 @@
     "typescript": "^4.4.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
