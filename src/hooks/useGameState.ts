@@ -122,13 +122,9 @@ export default function useGameState() {
 
     const newCharsStatus = { ...charsStatus };
     newRow.forEach(cellState => {
-      if (!cellState || !cellState.status) {
-        return;
-      }
-
       newCharsStatus[cellState.char] = Math.max(
         newCharsStatus[cellState.char] ?? CellStatus.notPresent,
-        cellState.status,
+        cellState.status ?? CellStatus.notPresent,
       );
     });
 
