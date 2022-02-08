@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/termo-infinito/static/css/main.9a754183.css",
-    "main.js": "/termo-infinito/static/js/main.39f11a73.js",
+    "main.js": "/termo-infinito/static/js/main.3a9d874d.js",
     "index.html": "/termo-infinito/index.html",
     "main.9a754183.css.map": "/termo-infinito/static/css/main.9a754183.css.map",
-    "main.39f11a73.js.map": "/termo-infinito/static/js/main.39f11a73.js.map"
+    "main.3a9d874d.js.map": "/termo-infinito/static/js/main.3a9d874d.js.map"
   },
   "entrypoints": [
     "static/css/main.9a754183.css",
-    "static/js/main.39f11a73.js"
+    "static/js/main.3a9d874d.js"
   ]
 }
