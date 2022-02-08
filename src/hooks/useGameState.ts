@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
+import getRandomElement from '../lib/getRandomElement';
 import getValidWord from '../lib/getValidWord';
-import randomElement from '../lib/randomElement';
 import removeDiacritics from '../lib/removeDiacritics';
 import words from '../lib/words';
 
@@ -41,7 +41,7 @@ const numCells = 5;
 function getInitialState(): GameState {
   return {
     status: GameStatus.completed,
-    word: randomElement(words),
+    word: getRandomElement(words),
     charsStatus: {},
     table: {
       rows: [...Array(numRows)].map(() => [...Array(numCells)]),
