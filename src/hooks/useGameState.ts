@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import { useCallback, useState } from 'react';
 import getRandomElement from '../lib/getRandomElement';
 import getValidWord from '../lib/getValidWord';
@@ -57,21 +58,20 @@ export default function useGameState() {
   const setCharAtCell = useCallback((cell: number, char: string | undefined) => {
     setGameState(gameState => {
       const {
-        table: { rows, activeRow },
+        table: { activeRow },
       } = gameState;
-      const newRow = [...rows[activeRow]];
-      newRow[cell] = char ? { char } : undefined;
-      const newRows = [...rows];
-      newRows[activeRow] = newRow;
-      return {
-        ...gameState,
+
+      return update(gameState, {
         table: {
-          ...gameState.table,
-          rows: newRows,
-          activeCell: char ? cell + 1 : cell,
+          rows: {
+            [activeRow]: {
+              [cell]: { $set: char ? { char } : undefined },
+            },
+          },
+          activeCell: { $set: char ? cell + 1 : cell },
         },
-        error: undefined,
-      };
+        error: { $set: undefined },
+      });
     });
   }, []);
 
@@ -85,20 +85,17 @@ export default function useGameState() {
     const validEntry = getValidWord(entry);
 
     if (!validEntry) {
-      setGameState({
-        ...gameState,
-        error: 'Palavra não encontrada na lista',
-      });
+      setGameState(update(gameState, { error: { $set: 'Palavra não encontrada na lista' } }));
       return;
     }
 
     const remainingChars: (string | undefined)[] = removeDiacritics(word).split('');
-    const newRow: CellState[] = rows[activeRow].map(cell => ({ char: cell?.char ?? '' }));
+    const newRow: CellState[] = validEntry.split('').map(char => ({ char }));
 
     newRow.forEach((cell, index) => {
-      if (remainingChars[index] === cell.char) {
+      if (remainingChars[index] === rows[activeRow][index]?.char) {
         remainingChars[index] = undefined;
-        newRow[index].status = CellStatus.correct;
+        cell.status = CellStatus.correct;
       }
     });
 
@@ -107,7 +104,7 @@ export default function useGameState() {
         return;
       }
 
-      const charIndex = remainingChars.indexOf(cell.char);
+      const charIndex = remainingChars.indexOf(rows[activeRow][index]?.char);
 
       if (charIndex >= 0) {
         remainingChars[charIndex] = undefined;
@@ -130,23 +127,24 @@ export default function useGameState() {
     });
 
     const complete = newRow.every(cell => cell?.status === CellStatus.correct);
-    const newRows = [...gameState.table.rows];
-    newRows[activeRow] = newRow;
 
-    setGameState({
-      ...gameState,
-      status: complete
-        ? GameStatus.completed
-        : activeRow === numRows - 1
-        ? GameStatus.failed
-        : GameStatus.playing,
-      charsStatus: newCharsStatus,
-      table: {
-        rows: newRows,
-        activeRow: complete ? numRows : activeRow + 1,
-        activeCell: 0,
-      },
-    });
+    setGameState(
+      update(gameState, {
+        status: {
+          $set: complete
+            ? GameStatus.completed
+            : activeRow === numRows - 1
+            ? GameStatus.failed
+            : GameStatus.playing,
+        },
+        charsStatus: { $set: newCharsStatus },
+        table: {
+          rows: { [activeRow]: { $set: newRow } },
+          activeRow: { $set: complete ? numRows : activeRow + 1 },
+          activeCell: { $set: 0 },
+        },
+      }),
+    );
   }, [gameState]);
 
   const onKeyPress = useCallback(
