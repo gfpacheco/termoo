@@ -92,29 +92,32 @@ export default function useGameState() {
     }
 
     const remainingChars: (string | undefined)[] = removeDiacritics(word).split('');
-    const newRow: (CellState | undefined)[] = rows[activeRow].map((cell, index) => {
-      if (!cell) {
-        return cell;
+    const newRow: CellState[] = rows[activeRow].map(cell => ({ char: cell?.char ?? '' }));
+
+    newRow.forEach((cell, index) => {
+      if (remainingChars[index] === cell.char) {
+        remainingChars[index] = undefined;
+        newRow[index].status = CellStatus.correct;
+      }
+    });
+
+    newRow.forEach((cell, index) => {
+      if (cell.status !== undefined) {
+        return;
       }
 
-      const charIndex =
-        remainingChars[index] === cell.char ? index : remainingChars.indexOf(cell.char);
+      const charIndex = remainingChars.indexOf(cell.char);
 
       if (charIndex >= 0) {
         remainingChars[charIndex] = undefined;
       }
 
-      const status =
+      cell.status =
         charIndex === -1
           ? CellStatus.notPresent
           : index === charIndex
           ? CellStatus.correct
           : CellStatus.wrongPlace;
-
-      return {
-        char: validEntry[index],
-        status,
-      };
     });
 
     const newCharsStatus = { ...charsStatus };
