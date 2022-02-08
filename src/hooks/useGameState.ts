@@ -81,7 +81,8 @@ export default function useGameState() {
       charsStatus,
       table: { rows, activeRow },
     } = gameState;
-    const entry = rows[activeRow].map(cell => cell?.char).join('');
+    const row = rows[activeRow] as CellState[];
+    const entry = row.map(cell => cell?.char).join('');
     const validEntry = getValidWord(entry);
 
     if (!validEntry) {
@@ -93,7 +94,7 @@ export default function useGameState() {
     const newRow: CellState[] = validEntry.split('').map(char => ({ char }));
 
     newRow.forEach((cell, index) => {
-      if (remainingChars[index] === rows[activeRow][index]?.char) {
+      if (remainingChars[index] === row[index].char) {
         remainingChars[index] = undefined;
         cell.status = CellStatus.correct;
       }
@@ -104,7 +105,7 @@ export default function useGameState() {
         return;
       }
 
-      const charIndex = remainingChars.indexOf(rows[activeRow][index]?.char);
+      const charIndex = remainingChars.indexOf(row[index].char);
 
       if (charIndex >= 0) {
         remainingChars[charIndex] = undefined;
@@ -119,10 +120,10 @@ export default function useGameState() {
     });
 
     const newCharsStatus = { ...charsStatus };
-    newRow.forEach(cellState => {
-      newCharsStatus[cellState.char] = Math.max(
-        newCharsStatus[cellState.char] ?? CellStatus.notPresent,
-        cellState.status ?? CellStatus.notPresent,
+    newRow.forEach(({ status }, index) => {
+      newCharsStatus[row[index].char] = Math.max(
+        newCharsStatus[row[index].char] ?? CellStatus.notPresent,
+        status ?? CellStatus.notPresent,
       );
     });
 
