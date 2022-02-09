@@ -6,17 +6,10 @@ import removeDiacritics from '../lib/removeDiacritics';
 import words from '../lib/words';
 
 export interface GameState {
-  status: GameStatus;
   word: string;
   charsStatus: Record<string, CellStatus>;
   table: TableState;
   error?: string;
-}
-
-export enum GameStatus {
-  playing,
-  completed,
-  failed,
 }
 
 export interface TableState {
@@ -41,7 +34,6 @@ const numCells = 5;
 
 function getInitialState(): GameState {
   return {
-    status: GameStatus.completed,
     word: getRandomElement(words),
     charsStatus: {},
     table: {
@@ -126,13 +118,6 @@ export default function useGameState() {
 
     setGameState(
       update(gameState, {
-        status: {
-          $set: complete
-            ? GameStatus.completed
-            : activeRowIndex === numRows - 1
-            ? GameStatus.failed
-            : GameStatus.playing,
-        },
         charsStatus: { $set: newCharsStatus },
         table: {
           rows: { [activeRowIndex]: { $set: newRow } },

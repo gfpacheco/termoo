@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useEffect } from 'react';
-import useGameState, { GameStatus } from '../hooks/useGameState';
+import useGameState, { CellStatus } from '../hooks/useGameState';
 import Keyboard from './Keyboard';
 import ResetButton from './ResetButton';
 import Table from './Table';
@@ -9,7 +9,7 @@ import Toast from './Toast';
 export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function Game({ className, ...rest }: GameProps) {
-  const { status, word, charsStatus, table, error, setActiveCellIndex, onKeyPress, restart } =
+  const { word, charsStatus, table, error, setActiveCellIndex, onKeyPress, restart } =
     useGameState();
 
   useEffect(() => {
@@ -24,12 +24,18 @@ export default function Game({ className, ...rest }: GameProps) {
     };
   }, [onKeyPress]);
 
+  const failed =
+    table.activeRowIndex === table.rows.length &&
+    table.rows[table.activeRowIndex - 1].some(
+      cellState => cellState?.status !== CellStatus.correct,
+    );
+
   return (
     <div
       className={classNames(className, 'h-full p-2 flex flex-col items-center justify-center')}
       {...rest}
     >
-      {status === GameStatus.failed && <Toast>Palavra certa: {word}</Toast>}
+      {failed && <Toast>Palavra certa: {word}</Toast>}
       {error && <Toast>{error}</Toast>}
       <Table {...table} setActiveCellIndex={setActiveCellIndex} />
       <ResetButton className="my-2" onClick={restart} />
