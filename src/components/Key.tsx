@@ -10,7 +10,7 @@ export default function Key({ className, status, ...rest }: KeyProps) {
     <button
       className={classNames(
         className,
-        'flex-1 h-12 sm:h-14 flex items-center justify-center border rounded-lg uppercase',
+        'flex-1 h-12 sm:h-14 flex items-center justify-center border rounded-lg font-semibold uppercase',
         {
           'bg-green-200 border-green-200': status === CellStatus.correct,
           'bg-yellow-200 border-yellow-200': status === CellStatus.wrongPlace,
