@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/termoo/static/css/main.a73fe825.css",
-    "main.js": "/termoo/static/js/main.c5387aea.js",
+    "main.js": "/termoo/static/js/main.434e4ca1.js",
     "index.html": "/termoo/index.html",
     "main.a73fe825.css.map": "/termoo/static/css/main.a73fe825.css.map",
-    "main.c5387aea.js.map": "/termoo/static/js/main.c5387aea.js.map"
+    "main.434e4ca1.js.map": "/termoo/static/js/main.434e4ca1.js.map"
   },
   "entrypoints": [
     "static/css/main.a73fe825.css",
-    "static/js/main.c5387aea.js"
+    "static/js/main.434e4ca1.js"
   ]
 }
