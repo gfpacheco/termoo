@@ -128,7 +128,7 @@ export default function useGameState() {
     );
   }, [gameState]);
 
-  const setActiveCellIndex = useCallback((activeCellIndex: number) => {
+  const onCellClick = useCallback((activeCellIndex: number) => {
     setGameState(gameState =>
       update(gameState, { table: { activeCellIndex: { $set: activeCellIndex } } }),
     );
@@ -159,5 +159,5 @@ export default function useGameState() {
     setGameState(getInitialState());
   }, []);
 
-  return { ...gameState, setActiveCellIndex, onKeyPress, restart };
+  return { ...gameState, onCellClick, onKeyPress, restart };
 }

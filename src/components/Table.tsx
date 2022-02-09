@@ -6,7 +6,7 @@ export interface TableProps extends React.ComponentPropsWithoutRef<'div'> {
   rows: (CellState | undefined)[][];
   activeRowIndex: number;
   activeCellIndex: number;
-  setActiveCellIndex(activeCellIndex: number): void;
+  onCellClick(activeCellIndex: number): void;
 }
 
 export default function Table({
@@ -14,7 +14,7 @@ export default function Table({
   rows,
   activeRowIndex,
   activeCellIndex,
-  setActiveCellIndex,
+  onCellClick,
   ...rest
 }: TableProps) {
   return (
@@ -25,7 +25,7 @@ export default function Table({
           row={row}
           isActive={activeRowIndex === index}
           activeCellIndex={activeCellIndex}
-          setActiveCellIndex={activeRowIndex === index ? setActiveCellIndex : undefined}
+          onCellClick={activeRowIndex === index ? onCellClick : undefined}
         />
       ))}
     </div>

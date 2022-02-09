@@ -6,7 +6,7 @@ export interface RowProps extends React.ComponentPropsWithoutRef<'div'> {
   row: (CellState | undefined)[];
   isActive: boolean;
   activeCellIndex: number;
-  setActiveCellIndex?(activeCellIndex: number): void;
+  onCellClick?(activeCellIndex: number): void;
 }
 
 export default function Row({
@@ -14,7 +14,7 @@ export default function Row({
   row,
   isActive,
   activeCellIndex,
-  setActiveCellIndex,
+  onCellClick,
   ...rest
 }: RowProps) {
   return (
@@ -25,7 +25,7 @@ export default function Row({
           state={state}
           isRowActive={isActive}
           isActive={isActive && activeCellIndex === index}
-          onClick={() => setActiveCellIndex?.(index)}
+          onClick={() => onCellClick?.(index)}
         />
       ))}
     </div>
