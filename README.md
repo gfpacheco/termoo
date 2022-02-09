@@ -1,8 +1,9 @@
-# Termo Infinito
+![Termoo](./logo-dark.svg#gh-light-mode-only)
+![Termoo](./logo-light.svg#gh-dark-mode-only)
 
 Have you ever wished that tomorrow would come faster so you could play the next word on [Termo](https://term.ooo)?
 
-Wish no more! Now you can play as many rounds as you like on [Termo Inifinito](https://gfpacheco.github.io/termo-infinito)!
+Wish no more! Now you can play as many rounds as you like on [Termoo](https://gfpacheco.github.io/termoo)!
 
 > This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

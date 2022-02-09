@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useEffect } from 'react';
 import useGameState, { CellStatus } from '../hooks/useGameState';
 import Keyboard from './Keyboard';
+import Logo from './Logo';
 import ResetButton from './ResetButton';
 import Table from './Table';
 import Toast from './Toast';
@@ -35,6 +36,7 @@ export default function Game({ className, ...rest }: GameProps) {
     >
       {done && <Toast>{succeeded ? 'Parabéns!' : <>Palavra certa: {word}</>}</Toast>}
       {error && <Toast>{error}</Toast>}
+      <Logo className="mt-2 mb-4 sm:mb-8 h-6 sm:h-10" />
       <Table {...table} onCellClick={onCellClick} />
       <ResetButton className="my-2" onClick={restart} />
       <Keyboard charsStatus={charsStatus} onKeyPress={onKeyPress} />

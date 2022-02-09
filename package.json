@@ -1,8 +1,8 @@
 {
-  "name": "termo-infinito",
+  "name": "termoo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gfpacheco.github.io/termo-infinito",
+  "homepage": "https://gfpacheco.github.io/termoo",
   "dependencies": {
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
