@@ -4,17 +4,17 @@ import Row from './Row';
 
 export interface TableProps extends React.ComponentPropsWithoutRef<'div'> {
   rows: (CellState | undefined)[][];
-  activeRow: number;
-  activeCell: number;
-  setActiveCell(activeCell: number): void;
+  activeRowIndex: number;
+  activeCellIndex: number;
+  setActiveCellIndex(activeCellIndex: number): void;
 }
 
 export default function Table({
   className,
   rows,
-  activeRow,
-  activeCell,
-  setActiveCell,
+  activeRowIndex,
+  activeCellIndex,
+  setActiveCellIndex,
   ...rest
 }: TableProps) {
   return (
@@ -23,9 +23,9 @@ export default function Table({
         <Row
           key={index}
           row={row}
-          isActive={activeRow === index}
-          activeCell={activeCell}
-          setActiveCell={activeRow === index ? setActiveCell : undefined}
+          isActive={activeRowIndex === index}
+          activeCellIndex={activeCellIndex}
+          setActiveCellIndex={activeRowIndex === index ? setActiveCellIndex : undefined}
         />
       ))}
     </div>

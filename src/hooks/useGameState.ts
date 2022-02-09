@@ -21,8 +21,8 @@ export enum GameStatus {
 
 export interface TableState {
   rows: (CellState | undefined)[][];
-  activeRow: number;
-  activeCell: number;
+  activeRowIndex: number;
+  activeCellIndex: number;
 }
 
 export interface CellState {
@@ -46,8 +46,8 @@ function getInitialState(): GameState {
     charsStatus: {},
     table: {
       rows: [...Array(numRows)].map(() => [...Array(numCells)]),
-      activeRow: 0,
-      activeCell: 0,
+      activeRowIndex: 0,
+      activeCellIndex: 0,
     },
   };
 }
@@ -58,30 +58,30 @@ export default function useGameState() {
   const setCharAtCell = useCallback((cell: number, char: string | undefined) => {
     setGameState(gameState => {
       const {
-        table: { activeRow },
+        table: { activeRowIndex },
       } = gameState;
 
       return update(gameState, {
         table: {
           rows: {
-            [activeRow]: {
+            [activeRowIndex]: {
               [cell]: { $set: char ? { char } : undefined },
             },
           },
-          activeCell: { $set: char ? cell + 1 : cell },
+          activeCellIndex: { $set: char ? cell + 1 : cell },
         },
         error: { $set: undefined },
       });
     });
   }, []);
 
-  const verifyActiveRow = useCallback(() => {
+  const verifyActiveRowIndex = useCallback(() => {
     const {
       word,
       charsStatus,
-      table: { rows, activeRow },
+      table: { rows, activeRowIndex },
     } = gameState;
-    const row = rows[activeRow] as CellState[];
+    const row = rows[activeRowIndex] as CellState[];
     const entry = row.map(cell => cell?.char).join('');
     const validEntry = getValidWord(entry);
 
@@ -129,48 +129,50 @@ export default function useGameState() {
         status: {
           $set: complete
             ? GameStatus.completed
-            : activeRow === numRows - 1
+            : activeRowIndex === numRows - 1
             ? GameStatus.failed
             : GameStatus.playing,
         },
         charsStatus: { $set: newCharsStatus },
         table: {
-          rows: { [activeRow]: { $set: newRow } },
-          activeRow: { $set: complete ? numRows : activeRow + 1 },
-          activeCell: { $set: 0 },
+          rows: { [activeRowIndex]: { $set: newRow } },
+          activeRowIndex: { $set: complete ? numRows : activeRowIndex + 1 },
+          activeCellIndex: { $set: 0 },
         },
       }),
     );
   }, [gameState]);
 
-  const setActiveCell = useCallback((activeCell: number) => {
-    setGameState(gameState => update(gameState, { table: { activeCell: { $set: activeCell } } }));
+  const setActiveCellIndex = useCallback((activeCellIndex: number) => {
+    setGameState(gameState =>
+      update(gameState, { table: { activeCellIndex: { $set: activeCellIndex } } }),
+    );
   }, []);
 
   const onKeyPress = useCallback(
     (key: string) => {
       const {
-        table: { rows, activeRow, activeCell },
+        table: { rows, activeRowIndex, activeCellIndex },
       } = gameState;
 
-      if (activeCell < numCells && /^[a-z]$/.test(key)) {
-        setCharAtCell(activeCell, key);
-      } else if (activeCell > 0 && key === 'Backspace') {
-        setCharAtCell(activeCell - 1, undefined);
+      if (activeCellIndex < numCells && /^[a-z]$/.test(key)) {
+        setCharAtCell(activeCellIndex, key);
+      } else if (activeCellIndex > 0 && key === 'Backspace') {
+        setCharAtCell(activeCellIndex - 1, undefined);
       } else if (
-        activeRow < numRows &&
-        rows[activeRow].filter(Boolean).length === numCells &&
+        activeRowIndex < numRows &&
+        rows[activeRowIndex].filter(Boolean).length === numCells &&
         key === 'Enter'
       ) {
-        verifyActiveRow();
+        verifyActiveRowIndex();
       }
     },
-    [gameState, setCharAtCell, verifyActiveRow],
+    [gameState, setCharAtCell, verifyActiveRowIndex],
   );
 
   const restart = useCallback(() => {
     setGameState(getInitialState());
   }, []);
 
-  return { ...gameState, setActiveCell, onKeyPress, restart };
+  return { ...gameState, setActiveCellIndex, onKeyPress, restart };
 }

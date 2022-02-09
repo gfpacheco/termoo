@@ -5,16 +5,16 @@ import Cell from './Cell';
 export interface RowProps extends React.ComponentPropsWithoutRef<'div'> {
   row: (CellState | undefined)[];
   isActive: boolean;
-  activeCell: number;
-  setActiveCell?(activeCell: number): void;
+  activeCellIndex: number;
+  setActiveCellIndex?(activeCellIndex: number): void;
 }
 
 export default function Row({
   className,
   row,
   isActive,
-  activeCell,
-  setActiveCell,
+  activeCellIndex,
+  setActiveCellIndex,
   ...rest
 }: RowProps) {
   return (
@@ -24,8 +24,8 @@ export default function Row({
           key={index}
           state={state}
           isRowActive={isActive}
-          isActive={isActive && activeCell === index}
-          onClick={() => setActiveCell?.(index)}
+          isActive={isActive && activeCellIndex === index}
+          onClick={() => setActiveCellIndex?.(index)}
         />
       ))}
     </div>
