@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Termo Infinito
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Have you ever wished that tomorrow would come faster so you could play the next word on [Termo](https://term.ooo)?
+
+Wish no more! Now you can play as many rounds as you like on [Termo Inifinito](https://gfpacheco.github.io/termo-infinito)!
+
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
