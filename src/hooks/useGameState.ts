@@ -111,12 +111,7 @@ export default function useGameState() {
         remainingChars[charIndex] = undefined;
       }
 
-      cell.status =
-        charIndex === -1
-          ? CellStatus.notPresent
-          : index === charIndex
-          ? CellStatus.correct
-          : CellStatus.wrongPlace;
+      cell.status = charIndex === -1 ? CellStatus.notPresent : CellStatus.wrongPlace;
     });
 
     const newCharsStatus = { ...charsStatus };
