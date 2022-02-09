@@ -143,17 +143,25 @@ export default function useGameState() {
     );
   }, [gameState]);
 
+  const setActiveCell = useCallback((activeCell: number) => {
+    setGameState(gameState => update(gameState, { table: { activeCell: { $set: activeCell } } }));
+  }, []);
+
   const onKeyPress = useCallback(
     (key: string) => {
       const {
-        table: { activeRow, activeCell },
+        table: { rows, activeRow, activeCell },
       } = gameState;
 
       if (activeCell < numCells && /^[a-z]$/.test(key)) {
         setCharAtCell(activeCell, key);
       } else if (activeCell > 0 && key === 'Backspace') {
         setCharAtCell(activeCell - 1, undefined);
-      } else if (activeRow < numRows && activeCell === numCells && key === 'Enter') {
+      } else if (
+        activeRow < numRows &&
+        rows[activeRow].filter(Boolean).length === numCells &&
+        key === 'Enter'
+      ) {
         verifyActiveRow();
       }
     },
@@ -164,5 +172,5 @@ export default function useGameState() {
     setGameState(getInitialState());
   }, []);
 
-  return { ...gameState, onKeyPress, restart };
+  return { ...gameState, setActiveCell, onKeyPress, restart };
 }
