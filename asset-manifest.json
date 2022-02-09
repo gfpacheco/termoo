@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/termo-infinito/static/css/main.9a754183.css",
-    "main.js": "/termo-infinito/static/js/main.75182c8f.js",
-    "index.html": "/termo-infinito/index.html",
-    "main.9a754183.css.map": "/termo-infinito/static/css/main.9a754183.css.map",
-    "main.75182c8f.js.map": "/termo-infinito/static/js/main.75182c8f.js.map"
+    "main.css": "/termoo/static/css/main.a73fe825.css",
+    "main.js": "/termoo/static/js/main.c5387aea.js",
+    "index.html": "/termoo/index.html",
+    "main.a73fe825.css.map": "/termoo/static/css/main.a73fe825.css.map",
+    "main.c5387aea.js.map": "/termoo/static/js/main.c5387aea.js.map"
   },
   "entrypoints": [
-    "static/css/main.9a754183.css",
-    "static/js/main.75182c8f.js"
+    "static/css/main.a73fe825.css",
+    "static/js/main.c5387aea.js"
   ]
 }
