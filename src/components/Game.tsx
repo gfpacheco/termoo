@@ -24,18 +24,17 @@ export default function Game({ className, ...rest }: GameProps) {
     };
   }, [onKeyPress]);
 
-  const failed =
-    table.activeRowIndex === table.rows.length &&
-    table.rows[table.activeRowIndex - 1].some(
-      cellState => cellState?.status !== CellStatus.correct,
-    );
+  const done = table.activeRowIndex === table.rows.length;
+  const succeeded =
+    done &&
+    table.rows.some(row => row.every(cellState => cellState?.status === CellStatus.correct));
 
   return (
     <div
       className={classNames(className, 'h-full p-2 flex flex-col items-center justify-center')}
       {...rest}
     >
-      {failed && <Toast>Palavra certa: {word}</Toast>}
+      {done && <Toast>{succeeded ? 'Parabéns!' : <>Palavra certa: {word}</>}</Toast>}
       {error && <Toast>{error}</Toast>}
       <Table {...table} setActiveCellIndex={setActiveCellIndex} />
       <ResetButton className="my-2" onClick={restart} />
