@@ -144,6 +144,10 @@ export default function useGameState() {
         setCharAtCell(activeCellIndex, key);
       } else if (activeCellIndex > 0 && key === 'Backspace') {
         setCharAtCell(activeCellIndex - 1, undefined);
+      } else if (activeCellIndex > 0 && key === 'ArrowLeft') {
+        onCellClick(activeCellIndex - 1);
+      } else if (activeCellIndex < numCells - 1 && key === 'ArrowRight') {
+        onCellClick(activeCellIndex + 1);
       } else if (
         activeRowIndex < numRows &&
         rows[activeRowIndex].filter(Boolean).length === numCells &&
@@ -152,7 +156,7 @@ export default function useGameState() {
         verifyActiveRowIndex();
       }
     },
-    [gameState, setCharAtCell, verifyActiveRowIndex],
+    [gameState, onCellClick, setCharAtCell, verifyActiveRowIndex],
   );
 
   const restart = useCallback(() => {
