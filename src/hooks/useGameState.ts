@@ -1,9 +1,10 @@
 import update from 'immutability-helper';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import getRandomElement from '../lib/getRandomElement';
 import getValidWord from '../lib/getValidWord';
 import removeDiacritics from '../lib/removeDiacritics';
 import words from '../lib/words';
+import usePersistentState from './usePersistentState';
 
 export interface GameState {
   word: string;
@@ -31,6 +32,7 @@ export enum CellStatus {
 
 const numRows = 6;
 const numCells = 5;
+const persistenceKey = 'gameState';
 
 function getInitialState(): GameState {
   return {
@@ -45,27 +47,30 @@ function getInitialState(): GameState {
 }
 
 export default function useGameState() {
-  const [gameState, setGameState] = useState<GameState>(getInitialState());
+  const [gameState, setGameState] = usePersistentState(getInitialState(), persistenceKey);
 
-  const setCharAtCell = useCallback((cell: number, char: string | undefined) => {
-    setGameState(gameState => {
-      const {
-        table: { activeRowIndex },
-      } = gameState;
+  const setCharAtCell = useCallback(
+    (cell: number, char: string | undefined) => {
+      setGameState(gameState => {
+        const {
+          table: { activeRowIndex },
+        } = gameState;
 
-      return update(gameState, {
-        table: {
-          rows: {
-            [activeRowIndex]: {
-              [cell]: { $set: char ? { char } : undefined },
+        return update(gameState, {
+          table: {
+            rows: {
+              [activeRowIndex]: {
+                [cell]: { $set: char ? { char } : undefined },
+              },
             },
+            activeCellIndex: { $set: char ? cell + 1 : cell },
           },
-          activeCellIndex: { $set: char ? cell + 1 : cell },
-        },
-        error: { $set: undefined },
+          error: { $set: undefined },
+        });
       });
-    });
-  }, []);
+    },
+    [setGameState],
+  );
 
   const verifyActiveRowIndex = useCallback(() => {
     const {
@@ -126,17 +131,20 @@ export default function useGameState() {
         },
       }),
     );
-  }, [gameState]);
+  }, [gameState, setGameState]);
 
-  const onCellClick = useCallback((activeCellIndex: number) => {
-    setGameState(gameState =>
-      update(gameState, { table: { activeCellIndex: { $set: activeCellIndex } } }),
-    );
-  }, []);
+  const onCellClick = useCallback(
+    (activeCellIndex: number) => {
+      setGameState(gameState =>
+        update(gameState, { table: { activeCellIndex: { $set: activeCellIndex } } }),
+      );
+    },
+    [setGameState],
+  );
 
   const restart = useCallback(() => {
     setGameState(getInitialState());
-  }, []);
+  }, [setGameState]);
 
   const onKeyPress = useCallback(
     (key: string) => {
