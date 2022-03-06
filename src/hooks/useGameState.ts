@@ -83,7 +83,11 @@ export default function useGameState() {
     const validEntry = getValidWord(entry);
 
     if (!validEntry) {
-      setGameState(update(gameState, { error: { $set: 'Palavra não encontrada na lista' } }));
+      setGameState(
+        update(gameState, {
+          error: { $set: 'Palavra não encontrada na lista' },
+        }),
+      );
       return;
     }
 
@@ -136,7 +140,9 @@ export default function useGameState() {
   const onCellClick = useCallback(
     (activeCellIndex: number) => {
       setGameState(gameState =>
-        update(gameState, { table: { activeCellIndex: { $set: activeCellIndex } } }),
+        update(gameState, {
+          table: { activeCellIndex: { $set: activeCellIndex } },
+        }),
       );
     },
     [setGameState],
