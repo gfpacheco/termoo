@@ -6,7 +6,15 @@ import removeDiacritics from '../lib/removeDiacritics';
 import words from '../lib/words';
 import usePersistentState from './usePersistentState';
 
-export interface GameState {
+export interface GameState extends PersistedState {
+  done: boolean;
+  succeeded: boolean;
+  onCellClick(activeCellIndex: number): void;
+  onKeyPress(key: string): void;
+  restart(): void;
+}
+
+export interface PersistedState {
   word: string;
   charsStatus: Record<string, CellStatus>;
   table: TableState;
@@ -30,11 +38,11 @@ export enum CellStatus {
   correct,
 }
 
-const numRows = 6;
-const numCells = 5;
-const persistenceKey = 'gameState';
+export const numRows = 6;
+export const numCells = 5;
+export const persistenceKey = 'gameState';
 
-function getInitialState(): GameState {
+function getInitialState(): PersistedState {
   return {
     word: getRandomElement(words),
     charsStatus: {},
@@ -46,7 +54,7 @@ function getInitialState(): GameState {
   };
 }
 
-export default function useGameState() {
+export default function useGameState(): GameState {
   const [gameState, setGameState] = usePersistentState(getInitialState(), persistenceKey);
 
   const setCharAtCell = useCallback(
@@ -179,5 +187,12 @@ export default function useGameState() {
     [gameState, onCellClick, restart, setCharAtCell, verifyActiveRowIndex],
   );
 
-  return { ...gameState, onCellClick, onKeyPress, restart };
+  const done = gameState.table.activeRowIndex === gameState.table.rows.length;
+  const succeeded =
+    done &&
+    gameState.table.rows.some(row =>
+      row.every(cellState => cellState?.status === CellStatus.correct),
+    );
+
+  return { ...gameState, done, succeeded, onCellClick, onKeyPress, restart };
 }

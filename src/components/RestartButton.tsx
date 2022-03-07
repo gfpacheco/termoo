@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import { MouseEvent, useRef } from 'react';
 
-export interface ResetButtonProps extends React.ComponentPropsWithoutRef<'button'> {}
+export interface RestartButtonProps extends React.ComponentPropsWithoutRef<'button'> {}
 
-export default function ResetButton({ className, onClick, ...rest }: ResetButtonProps) {
+export default function RestartButton({ className, onClick, ...rest }: RestartButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
