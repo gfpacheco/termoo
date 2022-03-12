@@ -17,7 +17,7 @@ export default function Modal({ className, open, onRequestClose, children, ...re
       {...rest}
     >
       <div className="absolute inset-0 bg-black opacity-30" />
-      <div className="relative w-11/12 max-w-lg rounded-lg bg-white p-4 sm:p-8 shadow">
+      <div className="relative w-11/12 max-w-lg rounded-lg bg-white dark:bg-gray-800 p-4 sm:p-8 shadow">
         {children}
       </div>
     </div>

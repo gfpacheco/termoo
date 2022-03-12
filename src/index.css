@@ -9,8 +9,8 @@
     @apply h-full;
   }
 
-  html {
-    @apply text-gray-700;
+  body {
+    @apply bg-white text-gray-700 dark:bg-gray-800 dark:text-white;
   }
 
   svg {

@@ -48,7 +48,12 @@ export default function GameEnd({ className, gameState, history, ...rest }: Game
           total={maxProgress}
         />
       ))}
-      <ProgressBar label="X" value={history.failures + history.abandonments} total={maxProgress} />
+      <ProgressBar
+        label="☠️"
+        value={history.failures + history.abandonments}
+        total={maxProgress}
+        bad
+      />
       <RestartButton onClick={restart} />
     </Modal>
   );

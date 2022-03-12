@@ -3,6 +3,7 @@ import { useCallback, useLayoutEffect, useState } from 'react';
 import useGameState from '../hooks/useGameState';
 import useHistory from '../hooks/useHistory';
 import useKeyDownHandler from '../hooks/useKeyDownHandler';
+import DarkModeToggle from './DarkModeToggle';
 import GameEnd from './GameEnd';
 import Keyboard from './Keyboard';
 import Logo from './Logo';
@@ -48,6 +49,7 @@ export default function Game({ className, ...rest }: GameProps) {
       className={classNames(className, 'h-full p-2 flex flex-col items-center justify-center')}
       {...rest}
     >
+      <DarkModeToggle />
       <GameEnd
         open={done && gameEndOpen}
         onRequestClose={() => setGameEndOpen(false)}
